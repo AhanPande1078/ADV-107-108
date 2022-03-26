@@ -1,0 +1,50 @@
+// https://teachablemachine.withgoogle.com/models/r6aYttxgC/
+
+function startClassification() 
+{
+    navigator.mediaDevices.getUserMedia({audio:true});
+    classifier = ml5.soundClassifier("https://teachablemachine.withgoogle.com/models/5qH_EJcG-/model.json", modelReady);
+
+}
+function modelReady()
+{
+classifier.classify(gotResults);
+}
+
+function gotResults(error,result)
+{
+      if(error){
+          console.log(error);
+      }
+      else{
+          console.log(result);
+          random_number_r = Math.floor(Math.random() * 255) + 1;
+          random_number_g = Math.floor(Math.random() * 255) + 1;
+          random_number_b = Math.floor(Math.random() * 255) + 1;
+          document.getElementById("result_label").innerHTML = "I can hear " + result[0].label;
+          accuracy_percent = (result[0].confidence * 100).toFixed(2) + "%";
+          document.getElementById("result_confidence").innerHTML = "Accuracy = " + accuracy_percent; 
+          Color = "rgb("+random_number_r+"," +random_number_g +","+ random_number_b+")";
+           console.log(Color)
+           document.getElementById("result_label").style.color = Color;
+           document.getElementById("result_confidence").style.color = Color;
+           img1 = document.getElementById("alien1");
+      
+
+           if(result[0].label == "Cat")
+           {
+               img1.src = "cat.gif";
+               
+           }
+           else if(result[0].label == "Dog") {
+            img1.src = "dog.gif";
+           }
+          else if(result[0].label == "Cow") {
+            img1.src = "cow.gif";
+           
+        }
+        else if(result[0].label == "Lion") {
+            img1.src = "lion.gif";
+            }
+      }
+}
